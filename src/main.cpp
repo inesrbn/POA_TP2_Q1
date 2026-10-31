@@ -3,7 +3,7 @@
 // Les classes Nourriture, Scene et Pigeon viendront se brancher ici.
 
 #include "raylib.h"
-
+#include "Scene.h"
 #include <exception>
 #include <iostream>
 
@@ -23,7 +23,7 @@ int main() {
             return 1;
         }
         SetTargetFPS(config::FPS);
-
+        Scene scene;
         // TODO (partie 4) : créer la Scene et les pigeons ici.
 
         // Boucle de jeu : un tour = une image affichée.
@@ -31,13 +31,34 @@ int main() {
         while (!WindowShouldClose()) {
             // 1. Entrées utilisateur
             // TODO (partie 4) : si clic gauche -> ajouter de la nourriture.
-
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                //ajouter de la nourriture à la scène.
+                scene.ajouterNourriture(GetMousePosition());
+            }
+            scene.nettoyer();  // supprime les nourritures périmées
+            
+            //test de manger la nourriture la plus fraiche si on appuie sur espace
+            if (IsKeyPressed(KEY_SPACE)) {
+                int id;
+                Vector2 pos;
+                if (scene.plusFraiche(id, pos)) {
+                    bool premier = scene.essayerManger(id);  // doit valoir true : la graine est mangée
+                    bool second  = scene.essayerManger(id);  // doit valoir false : elle n'existe plus
+                    std::cout << std::boolalpha              // affiche true/false au lieu de 1/0
+                            << "Graine " << id
+                            << " -> 1er essai : " << premier
+                            << ", 2e essai : " << second << '\n';
+                } else {
+                    std::cout << "Aucune graine fraiche a manger\n";
+                }
+            }//--------------------------------------
             // 2. Dessin (uniquement dans le thread principal !)
             BeginDrawing();
             ClearBackground(Color{200, 200, 190, 255});  // couleur "pavés"
-
-            // TODO (partie 4) : dessiner la nourriture puis les pigeons.
-
+            scene.dessinerNourriture();  // dessine la nourriture
+            // dessiner les pigeons.
+            // Pigeon provisoire : un cercle immobile au centre (sera remplacé par les vrais pigeons)
+            DrawCircleV({config::LARGEUR / 2.0f, config::HAUTEUR / 2.0f}, 15, GRAY);
             DrawText("Clique pour lancer des graines", 10, 10, 20, DARKGRAY);
             DrawFPS(config::LARGEUR - 90, 10);
             EndDrawing();
