@@ -27,4 +27,19 @@ make clean  # nettoie
 - **Clic gauche** : lancer de la nourriture à l'endroit cliqué
 - **Échap** ou fermer la fenêtre : quitter
 
-À compléter : règles de fraîcheur, effarouchement, etc.
+## Ce qui se passe à l'écran
+
+- **Graine verte** : fraîche pendant 5 secondes. Les pigeons se dirigent vers la plus récente
+  et la mangent ; si plusieurs pigeons la touchent en même temps, un seul la mange.
+- **Graine marron** : plus fraîche (de 5 à 10 secondes). Les pigeons l'ignorent.
+- **Après 10 secondes** : la graine disparaît.
+- **Pigeons** : à compléter (sommeil sans nourriture, déplacement, effarouchement).
+
+## Organisation du code
+
+| Fichier | Rôle |
+| --- | --- |
+| `src/main.cpp` | Fenêtre, boucle principale, clic, dessin |
+| `src/Nourriture.h/.cpp` | Une graine : position, id unique, fraîcheur |
+| `src/Scene.h/.cpp` | Toute la nourriture, protégée par un mutex |
+| `src/Pigeon.h/.cpp` | Un pigeon et son thread |
