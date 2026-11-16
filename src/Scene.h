@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <mutex>
 #include "raylib.h"
@@ -7,6 +9,7 @@ class Scene{
     public:
         static const int DELAI_DISPARITION = 10;
         
+        Scene();  // constructeur par défaut
         void ajouterNourriture(Vector2 pos);  // ajoute une nouvelle nourriture à la scène
         bool plusFraiche(int& id, Vector2& pos) const;  // trouve la nourriture la plus fraîche
         bool essayerManger(int id);  // essaie de manger la nourriture avec l'id donné

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "raylib.h"
 
 class Nourriture {
@@ -17,6 +19,4 @@ class Nourriture {
         int id;
         Vector2 position;
         double heureCreation;
-        
-    
 };

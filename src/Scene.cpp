@@ -1,6 +1,10 @@
 #include "Scene.h"
 #include <algorithm>
 
+// Constructeur par défaut
+Scene::Scene() : nourritures(), verrou() {
+}
+
 void Scene::ajouterNourriture(Vector2 pos) {
     std::lock_guard<std::mutex> lock(verrou);// verrouille le mutex pour protéger l'accès au vecteur
     nourritures.emplace_back(pos);// ajoute une nouvelle nourriture à la fin du vecteur

@@ -1,9 +1,7 @@
-// main.cpp : point d'entrée du programme.
-// Pour l'instant : une fenêtre raylib vide avec la boucle de jeu.
-// Les classes Nourriture, Scene et Pigeon viendront se brancher ici.
 
 #include "raylib.h"
 #include "Scene.h"
+#include "Pigeon.h"
 #include <exception>
 #include <iostream>
 
@@ -17,6 +15,8 @@ constexpr const char* TITRE = "Nourrir les pigeons";
 
 int main() {
     try {
+        // Initilisation des éléments du jeu
+        // Initialisation du contexte graphique
         InitWindow(config::LARGEUR, config::HAUTEUR, config::TITRE);
         if (!IsWindowReady()) {
             std::cerr << "Erreur : impossible d'ouvrir la fenêtre.\n";
@@ -24,20 +24,27 @@ int main() {
         }
         SetTargetFPS(config::FPS);
         Scene scene;
-        // TODO (partie 4) : créer la Scene et les pigeons ici.
+
+        //Initilisation de la logique
+        Pigeon pigeon(scene, {200.0f, 200.0f}, 100.0f, config::LARGEUR, config::HAUTEUR);
+        pigeon.demarrer();
+
+        Pigeon pigeon2(scene, {300.0f, 300.0f}, 100.0f, config::LARGEUR, config::HAUTEUR);
+        pigeon2.demarrer();
+
 
         // Boucle de jeu : un tour = une image affichée.
         // On sort quand l'utilisateur ferme la fenêtre ou appuie sur Échap.
         while (!WindowShouldClose()) {
-            // 1. Entrées utilisateur
-            // TODO (partie 4) : si clic gauche -> ajouter de la nourriture.
+            // Si clic gauche -> ajouter de la nourriture.
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 //ajouter de la nourriture à la scène.
                 scene.ajouterNourriture(GetMousePosition());
             }
+
             scene.nettoyer();  // supprime les nourritures périmées
             
-            //test de manger la nourriture la plus fraiche si on appuie sur espace
+            /*//test de manger la nourriture la plus fraiche si on appuie sur espace
             if (IsKeyPressed(KEY_SPACE)) {
                 int id;
                 Vector2 pos;
@@ -51,22 +58,24 @@ int main() {
                 } else {
                     std::cout << "Aucune graine fraiche a manger\n";
                 }
-            }//--------------------------------------
-            // 2. Dessin (uniquement dans le thread principal !)
+            }//--------------------------------------*/
+
+            // Dessin
+            // Dessin de la scène
             BeginDrawing();
             ClearBackground(Color{200, 200, 190, 255});  // couleur "pavés"
-            scene.dessinerNourriture();  // dessine la nourriture
+
+            // Dessin du "gameplay"
+            scene.dessinerNourriture();
             // dessiner les pigeons.
-            // Pigeon provisoire : un cercle immobile au centre (sera remplacé par les vrais pigeons)
-            DrawCircleV({config::LARGEUR / 2.0f, config::HAUTEUR / 2.0f}, 15, GRAY);
-            DrawText("Clique pour lancer des graines", 10, 10, 20, DARKGRAY);
-            DrawFPS(config::LARGEUR - 90, 10);
+            pigeon.dessiner();
+            pigeon2.dessiner();
             EndDrawing();
         }
 
-        // TODO : arrêter proprement les threads des pigeons AVANT de fermer.
-
+        pigeon.arreter();
         CloseWindow();
+
     } catch (const std::exception& e) {
         std::cerr << "Erreur inattendue : " << e.what() << '\n';
         if (IsWindowReady()) CloseWindow();
