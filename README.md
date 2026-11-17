@@ -33,7 +33,7 @@ make clean  # nettoie
   et la mangent ; si plusieurs pigeons la touchent en même temps, un seul la mange.
 - **Graine marron** : plus fraîche (de 5 à 10 secondes). Les pigeons l'ignorent.
 - **Après 10 secondes** : la graine disparaît.
-- **Pigeons** : à compléter (sommeil sans nourriture, déplacement, effarouchement).
+- **Pigeons** : Les pigeons se déplacent vers la nourriture la plus fraiche, s'arrêtent si il n'y a plus aucune nourriture fraiche de disponible et peuvent parfois être effrayé les faisant se repositionner sur l'écran.
 
 ## Organisation du code
 
